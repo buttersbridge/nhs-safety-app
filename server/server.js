@@ -25,6 +25,27 @@ app.post("/api/login", (req, res) => {
   );
 });
 
+/*----------------- CHANGE PASSWORD --------------*/
+
+app.post("/user/change-password", async (req, res) => {
+  const { old_password, new_password } = req.body;
+  const userId = req.user.id; // from your auth middleware
+
+  const user = await db.getUserById(userId);
+
+  // Check old password
+  if (!bcrypt.compareSync(old_password, user.password_hash)) {
+    return res.json({ error: "Current password is incorrect" });
+  }
+
+  // Hash new password
+  const newHash = bcrypt.hashSync(new_password, 10);
+
+  await db.updateUserPassword(userId, newHash);
+
+  res.json({ success: true });
+});
+
 /* ---------------- PRACTITIONERS LIST ---------------- */
 
 app.get("/api/practitioners", (req, res) => {

@@ -1,4 +1,4 @@
-console.log("Loaded duty.js version 3");
+console.log("Loaded duty.js version 4");
 
 const userDuty = requireUser();
 
@@ -127,3 +127,6 @@ dutyDate.addEventListener("change", loadDutyVisits);
 /* ---------------- INITIAL LOAD ---------------- */
 
 loadDutyVisits();
+
+// Auto‑refresh every 30 seconds
+setInterval(loadDutyVisits, 30000);

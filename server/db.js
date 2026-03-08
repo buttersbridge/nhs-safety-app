@@ -31,4 +31,27 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
+// Fetch user by ID
+async function getUserById(id) {
+  const result = await db.query(
+    "SELECT * FROM users WHERE id = $1",
+    [id]
+  );
+  return result.rows[0];
+}
+
+// Update password hash
+async function updateUserPassword(id, hash) {
+  return db.query(
+    "UPDATE users SET password_hash = $1 WHERE id = $2",
+    [hash, id]
+  );
+}
+
+module.exports = {
+  getUserById,
+  updateUserPassword,
+  // ...any other exports you already have
+};
+
 module.exports = db;
