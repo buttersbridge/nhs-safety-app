@@ -103,6 +103,12 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
+.btn-cancel{
+  background: lightskyblue;
+  color: gray;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
 /* Layout */
 
 .section {
