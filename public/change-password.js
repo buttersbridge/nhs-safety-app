@@ -1,5 +1,14 @@
 const user = requireUser();
 
+document.getElementById("menuBtn").onclick = () => {
+  window.location.href = "menu.html";
+};
+
+document.getElementById("logoutBtn").onclick = () => {
+  localStorage.removeItem("user");
+  window.location.href = "index.html";
+};
+
 document.getElementById("savePasswordBtn").onclick = async () => {
   const oldPw = document.getElementById("oldPassword").value.trim();
   const newPw = document.getElementById("newPassword").value.trim();
@@ -15,7 +24,7 @@ document.getElementById("savePasswordBtn").onclick = async () => {
     return;
   }
 
-  const result = await apiPost("/change-password", {
+  const result = await apiPost("/user/change-password", {
     old_password: oldPw,
     new_password: newPw
   });
