@@ -45,27 +45,32 @@
   </div>
 
   <script src="app.js"></script>
-  <script>
-    const u = getUser();
-    if (!u) {
-      window.location.href = "index.html";
+ <script>
+  const u = getUser();
+  if (!u) {
+    window.location.href = "index.html";
+  }
+
+  document.getElementById("headerSubtitle").textContent =
+    `Logged in as: ${u.name || u.email}`;
+
+  document.getElementById("logoutBtn").onclick = () => {
+    localStorage.removeItem("user");
+    window.location.href = "index.html";
+  };
+
+  document.getElementById("managerBtn").onclick = () => {
+    if (u.role !== "manager") {
+      alert("Current user doesn't have these permissions");
+      return;
     }
+    window.location.href = "manager.html";
+  };
 
-    document.getElementById("headerSubtitle").textContent =
-      `Logged in as: ${u.name || u.email}`;
-
-    document.getElementById("logoutBtn").onclick = () => {
-      localStorage.removeItem("user");
-      window.location.href = "index.html";
-    };
-
-    document.getElementById("managerBtn").onclick = () => {
-      if (u.role !== "manager") {
-        alert("Current user doesn't have these permissions");
-        return;
-      }
-      window.location.href = "manager.html";
-    };
-  </script>
+  // ⭐ Add this
+  document.getElementById("changePasswordBtn").onclick = () => {
+    window.location.href = "change-password.html";
+  };
+</script>
 </body>
 </html>
