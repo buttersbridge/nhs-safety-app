@@ -173,6 +173,35 @@ app.get("/api/duty/visits", (req, res) => {
   });
 });
 
+/* ---------------- CHANGE PASSWORD (JWT-free) ---------------- */
+
+app.post("/api/change-password", (req, res) => {
+  const { userId, oldPassword, newPassword } = req.body;
+
+  // 1. Verify user exists and old password matches
+  db.get(
+    "select id from users where id = ? and password = ?",
+    [userId, oldPassword],
+    (err, row) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      if (!row) {
+        return res.status(400).json({ error: "Current password is incorrect" });
+      }
+
+      // 2. Update password
+      db.run(
+        "update users set password = ? where id = ?",
+        [newPassword, userId],
+        function (err2) {
+          if (err2) return res.status(500).json({ error: err2.message });
+          res.json({ success: true });
+        }
+      );
+    }
+  );
+});
+
 /* ---------------- STATIC FILES (MUST BE LAST) ---------------- */
 
 app.use(express.static(path.join(__dirname, "..", "public")));
