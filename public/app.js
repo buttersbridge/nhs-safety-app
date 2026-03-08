@@ -24,31 +24,18 @@ function requireUser() {
 /* ---------------- API HELPERS ---------------- */
 
 async function apiGet(url, params = {}) {
-  const token = localStorage.getItem("token");
   const query = new URLSearchParams(params).toString();
-
-  const res = await fetch(`${url}?${query}`, {
-    headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  });
-
+  const res = await fetch(`${url}?${query}`);
   if (!res.ok) throw new Error("API GET failed");
   return res.json();
 }
 
 async function apiPost(url, body = {}) {
-  const token = localStorage.getItem("token");
-
-  const res = await fetch(url, {
+  const res = await fetch(`${url}`, {
     method: "POST",
-    headers: { 
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
-
   if (!res.ok) throw new Error("API POST failed");
   return res.json();
 }

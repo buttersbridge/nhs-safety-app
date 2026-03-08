@@ -21,55 +21,12 @@ app.post("/api/login", (req, res) => {
     (err, row) => {
       if (err) return res.status(500).json({ error: err.message });
       if (!row) return res.status(401).json({ error: "Invalid credentials" });
-
-      // ⭐ Create JWT
-      const token = jwt.sign(
-        {
-          id: row.id,
-          email: row.email,
-          role: row.role
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" }
-      );
-
-      // ⭐ Return both user and token
-      res.json({
-        user: row,
-        token
-      });
+      res.json(row);
     }
   );
 });
 
-/*----------------- CHANGE PASSWORD --------------*/
 
-app.post("/user/change-password", authMiddleware, async (req, res) => {
-  console.log("CHANGE PASSWORD HIT, req.user =", req.user);
-
-  const userId = req.user.id;  // ⭐ This will now work
-  const { old_password, new_password } = req.body;
-
-  try {
-    const user = await db.getUserById(userId);
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const correct = user.password === old_password; // or bcrypt compare
-    if (!correct) {
-      return res.status(400).json({ error: "Current password is incorrect" });
-    }
-
-    await db.updateUserPassword(userId, new_password);
-    res.json({ success: true });
-
-  } catch (err) {
-    console.error("Password change error:", err);
-    res.status(500).json({ error: "Server error updating password" });
-  }
-});
 
 /* ---------------- PRACTITIONERS LIST ---------------- */
 
