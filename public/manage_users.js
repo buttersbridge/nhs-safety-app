@@ -91,7 +91,7 @@ addUserForm.addEventListener("submit", async (e) => {
     role: "practitioner"
   };
 
-  await apiPost("/users", body);
+  await apiPost("/api/users", body);
   addUserForm.reset();
   loadPractitioners();
 });
