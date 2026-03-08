@@ -20,7 +20,23 @@ app.post("/api/login", (req, res) => {
     (err, row) => {
       if (err) return res.status(500).json({ error: err.message });
       if (!row) return res.status(401).json({ error: "Invalid credentials" });
-      res.json(row);
+
+      // ⭐ Create JWT
+      const token = jwt.sign(
+        {
+          id: row.id,
+          email: row.email,
+          role: row.role
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      // ⭐ Return both user and token
+      res.json({
+        user: row,
+        token
+      });
     }
   );
 });
