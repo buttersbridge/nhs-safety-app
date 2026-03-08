@@ -25,13 +25,13 @@ function requireUser() {
 
 async function apiGet(url, params = {}) {
   const query = new URLSearchParams(params).toString();
-  const res = await fetch(`/api${url}?${query}`);
+  const res = await fetch(`${url}?${query}`);
   if (!res.ok) throw new Error("API GET failed");
   return res.json();
 }
 
 async function apiPost(url, body = {}) {
-  const res = await fetch(`/api${url}`, {
+  const res = await fetch(`${url}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
