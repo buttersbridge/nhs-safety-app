@@ -141,7 +141,6 @@ app.get("/api/duty/visits", (req, res) => {
   const sql = `
     select v.*, u.name as practitioner_name
     from visits v
-    join duty_assignments d on d.practitioner_id = v.user_id and d.date = v.date
     join users u on u.id = v.user_id
     where v.date = ?
     order by v.start_time
