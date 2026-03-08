@@ -6,6 +6,7 @@ document.getElementById("saveBtn").onclick = async () => {
 
   const msg = document.getElementById("msg");
   msg.textContent = "";
+  msg.style.color = "";
 
   try {
     const res = await apiPost("/api/change-password", {
