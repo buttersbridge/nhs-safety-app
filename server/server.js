@@ -1,3 +1,4 @@
+const authMiddleware = require("./authMiddleware");
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -43,31 +44,30 @@ app.post("/api/login", (req, res) => {
 
 /*----------------- CHANGE PASSWORD --------------*/
 
-app.post("/user/change-password", async (req, res) => {
-  try {
-    const { old_password, new_password } = req.body;
-    const userId = req.user.id;
+app.post("/user/change-password", authMiddleware, async (req, res) => {
+  console.log("CHANGE PASSWORD HIT, req.user =", req.user);
 
+  const userId = req.user.id;  // ⭐ This will now work
+  const { old_password, new_password } = req.body;
+
+  try {
     const user = await db.getUserById(userId);
 
     if (!user) {
-      return res.json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
-    const correct = bcrypt.compareSync(old_password, user.password_hash);
+    const correct = user.password === old_password; // or bcrypt compare
     if (!correct) {
-      return res.json({ error: "Current password is incorrect" });
+      return res.status(400).json({ error: "Current password is incorrect" });
     }
 
-    const newHash = bcrypt.hashSync(new_password, 10);
-
-    await db.updateUserPassword(userId, newHash);
-
+    await db.updateUserPassword(userId, new_password);
     res.json({ success: true });
 
   } catch (err) {
     console.error("Password change error:", err);
-    res.json({ error: "Server error updating password" });
+    res.status(500).json({ error: "Server error updating password" });
   }
 });
 
