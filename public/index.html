@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safety App - Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <div class="login-card">
+      <h1>Early Intervention in Psychosis Halton/Warrington Safety App</h1>
+      <p class="section-subtitle">Sign in with your NHS email and password.</p>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="NHS email" required><br>
+        <input type="password" id="password" placeholder="Password" required><br>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!res.ok) {
+      alert("Invalid email or password");
+      return;
+    }
+
+    const user = await res.json();
+
+    // 🔥 This replaces saveUser()
+    localStorage.setItem("user", JSON.stringify(user));
+
+    window.location.href = "menu.html";
+  } catch (err) {
+    console.error(err);
+    alert("Login failed");
+  }
+});
+</script>
+</body>
+</html>

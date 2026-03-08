@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My Diary</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div>
+        <p class="header-title">Early Intervention in Psychosis Halton/Warrington Safety App</p>
+        <p class="header-subtitle" id="headerSubtitle">Diary</p>
+      </div>
+
+      <div class="header-actions nav-buttons">
+        <button id="menuBtn" class="btn btn-outline">Menu</button>
+        <button id="dutyBtn" class="btn btn-outline">Duty</button>
+        <button id="managerBtn" class="btn btn-outline">Manager</button>
+        <button id="logoutBtn" class="btn btn-outline">Logout</button>
+      </div>
+    </div>
+
+    <!-- MAIN SECTION -->
+    <div class="section">
+      <p class="section-title">My visits</p>
+      <p class="section-subtitle">View and manage your visits for the selected day.</p>
+
+      <!-- DATE PICKER -->
+      <div class="controls-row">
+        <label>
+          Date:
+          <input type="date" id="visitDate">
+        </label>
+      </div>
+
+      <!-- ADD VISIT FORM -->
+      <div class="form-card">
+        <p class="section-subtitle">Add a visit</p>
+
+        <form id="addVisitForm">
+
+          <div class="form-row">
+            <select id="visitType">
+              <option>Home Visit</option>
+              <option>Outpatient</option>
+              <option>BFT</option>
+              <option>Physical Health</option>
+              <option>Social Contact</option>
+              <option>Training</option>
+              <option>Break</option>
+            </select>
+
+            <input type="text" id="initials" placeholder="Patient initials">
+          </div>
+
+          <div class="form-row">
+            <input type="time" id="startTime">
+            <input type="time" id="endTime">
+          </div>
+
+          <div class="form-row">
+            <label>
+              <input type="checkbox" id="highRisk"> High risk
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add visit</button>
+        </form>
+      </div>
+
+      <!-- VISIT LIST -->
+      <ul id="visitList" class="visit-list"></ul>
+    </div>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="app.js"></script>
+  <script src="practitioner.js"></script>
+
+  <script>
+    const u = getUser();
+    if (!u) {
+      window.location.href = "index.html";
+    }
+
+    // Update header subtitle based on role
+    document.getElementById("headerSubtitle").textContent =
+      `${u.role === "manager" ? "Manager" : "Practitioner"}: ${u.name || u.email}`;
+
+    // Navigation buttons
+    document.getElementById("logoutBtn").onclick = () => {
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    };
+
+    document.getElementById("menuBtn").onclick = () => {
+      window.location.href = "menu.html";
+    };
+
+    document.getElementById("dutyBtn").onclick = () => {
+      window.location.href = "duty.html";
+    };
+
+    document.getElementById("managerBtn").onclick = () => {
+      if (u.role !== "manager") {
+        alert("Current user doesn't have these permissions");
+        return;
+      }
+      window.location.href = "manager.html";
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Duty Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div>
+        <p class="header-title">Early Intervention in Psychosis Halton/Warrington Safety App</p>
+        <p class="header-subtitle" id="headerSubtitle">Duty Dashboard</p>
+      </div>
+
+      <div class="header-actions nav-buttons">
+        <button id="menuBtn" class="btn btn-outline">Menu</button>
+        <button id="dutyBtn" class="btn btn-outline">Duty</button>
+        <button id="managerBtn" class="btn btn-outline">Manager</button>
+        <button id="logoutBtn" class="btn btn-outline">Logout</button>
+      </div>
+    </div>
+
+    <!-- MAIN SECTION -->
+    <div class="section">
+      <p class="section-title">Today's visits</p>
+      <p class="section-subtitle">Monitor visit status and identify overdue contacts.</p>
+
+      <!-- DATE PICKER -->
+      <div class="controls-row">
+        <label>
+          Date:
+          <input type="date" id="dutyDate">
+        </label>
+      </div>
+
+      <!-- HOURLY GRID -->
+      <div id="dutyGrid"></div>
+    </div>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="app.js"></script>
+  <script src="duty.js"></script>
+
+  <script>
+    const u = getUser();
+    if (!u) {
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("headerSubtitle").textContent =
+      `Duty view (${u.name || u.email})`;
+
+    // Navigation buttons
+    document.getElementById("logoutBtn").onclick = () => {
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    };
+
+    document.getElementById("menuBtn").onclick = () => {
+      window.location.href = "menu.html";
+    };
+
+    document.getElementById("dutyBtn").onclick = () => {
+      window.location.href = "duty.html";
+    };
+
+    document.getElementById("managerBtn").onclick = () => {
+      if (u.role !== "manager") {
+        alert("Current user doesn't have these permissions");
+        return;
+      }
+      window.location.href = "manager.html";
+    };
+  </script>
+
+</body>
+</html>

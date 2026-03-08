@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Manager - Duty Assignment</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div>
+        <p class="header-title">Early Intervention in Psychosis Halton/Warrington Safety App</p>
+        <p class="header-subtitle" id="headerSubtitle">Manager View</p>
+      </div>
+
+      <div class="header-actions nav-buttons">
+        <button id="menuBtn" class="btn btn-outline">Menu</button>
+        <button id="dutyBtn" class="btn btn-outline">Duty</button>
+        <button id="managerBtn" class="btn btn-outline">Manager</button>
+        <button id="logoutBtn" class="btn btn-outline">Logout</button>
+      </div>
+    </div>
+
+    <!-- MAIN SECTION -->
+    <div class="section">
+      <p class="section-title">Duty Rota</p>
+      <p class="section-subtitle">
+        Assign duty practitioners for each day. Duty staff receive alerts for overdue visits.
+      </p>
+
+      <p>
+        <a href="duty.html">Go to duty dashboard</a> ·
+        <a href="practitioner.html">My diary</a> ·
+        <a href="manage_users.html">Manage practitioners</a>
+      </p>
+
+      <div class="controls-row">
+        <label>
+          Date:
+          <input type="date" id="dutyAssignDate">
+        </label>
+      </div>
+
+      <div class="form-card">
+        <p class="section-subtitle">Select duty practitioners</p>
+        <div id="practitionerList"></div>
+
+        <button id="saveDutyBtn" class="btn btn-primary">Save duty for this day</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script src="manager.js"></script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+:root {
+  --nhs-blue: #005eb8;
+  --nhs-light-blue: #e6f0fa;
+  --bg-light: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-main: #1f2933;
+  --text-muted: #6b7280;
+  --border-soft: #d1d5db;
+  --danger: #d32f2f;
+  --warning: #f59e0b;
+  --success: #2e7d32;
+  --info: #2563eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg-light);
+  color: var(--text-main);
+}
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Header */
+
+.header {
+  background: var(--nhs-blue);
+  color: white;
+  padding: 16px;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.header-subtitle {
+  font-size: 0.95rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.header-actions {
+  margin-top: 0;
+  display: flex;
+  gap: 8px;
+}
+
+/* Buttons */
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: white;
+  color: var(--nhs-blue);
+}
+
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Layout */
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+/* Controls */
+
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+input[type="date"],
+input[type="time"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border-soft);
+  font-size: 0.9rem;
+}
+
+label {
+  font-size: 0.9rem;
+}
+
+/* Add visit form */
+
+.form-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid var(--border-soft);
+  margin-bottom: 16px;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.form-row > * {
+  flex: 1 1 120px;
+}
+
+/* Visit cards */
+
+.visit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.visit-item {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.visit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visit-type {
+  font-weight: 600;
+}
+
+.visit-initials {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.visit-time {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.visit-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visit-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+/* Status colours */
+
+.visit-grey .status-dot {
+  background: #9ca3af;
+}
+
+.visit-blue .status-dot {
+  background: var(--info);
+}
+
+.visit-green .status-dot {
+  background: var(--success);
+}
+
+.visit-orange .status-dot {
+  background: var(--warning);
+}
+
+.visit-red .status-dot {
+  background: var(--danger);
+}
+
+.visit-safe-text {
+  color: var(--success);
+  font-size: 0.85rem;
+}
+
+.visit-overdue-text {
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+
+/* Buttons inside cards */
+
+.visit-item .btn {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  margin-right: 6px;
+}
+
+/* Links */
+
+a {
+  color: var(--nhs-blue);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Login form */
+
+.login-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-soft);
+  max-width: 360px;
+  margin: 40px auto;
+}
+
+.login-card h1 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.login-card input {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.login-card button {
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* Hourly diary grid for duty/manager */
+
+.hour-block {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border-soft);
+}
+
+.hour-header {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--nhs-blue);
+}
+
+.hour-visits {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Navigation buttons */
+
+.nav-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 0;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+  .header {
+    border-radius: 0 0 16px 16px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .header-actions {
+    justify-content: flex-start;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+}
+
+.promote-btn {
+  background: transparent;
+  color: #0072ce; /* NHS bright blue */
+  border: 1px solid #0072ce;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.promote-btn:hover {
+  background: #e6f2ff;
+}
+
+.delete-btn {
+  background: transparent;
+  color: #005eb8; /* NHS blue */
+  border: 1px solid #005eb8;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #e6f0fa;
+}
+
+.practitioner-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background: #fafafa;
+}

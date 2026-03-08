@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Practitioners</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div>
+        <p class="header-title">Early Intervention in Psychosis Halton/Warrington Safety App</p>
+        <p class="header-subtitle">Manage Practitioners</p>
+      </div>
+
+      <div class="header-actions nav-buttons">
+        <button id="menuBtn" class="btn btn-outline">Menu</button>
+        <button id="dutyBtn" class="btn btn-outline">Duty</button>
+        <button id="managerBtn" class="btn btn-outline">Manager</button>
+        <button id="logoutBtn" class="btn btn-outline">Logout</button>
+      </div>
+    </div>
+
+    <!-- MAIN SECTION -->
+    <div class="section">
+      <p class="section-title">Practitioners</p>
+      <p class="section-subtitle">Add, remove, or promote practitioner accounts.</p>
+
+      <div id="practitionerList"></div>
+
+      <div class="form-card">
+        <p class="section-subtitle">Add new practitioner</p>
+
+        <form id="addUserForm">
+          <input type="text" id="newName" placeholder="Name" required>
+          <input type="email" id="newEmail" placeholder="Email" required>
+          <input type="password" id="newPassword" placeholder="Password" required>
+
+          <button type="submit" class="btn btn-primary">Add practitioner</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script src="manage_users.js"></script>
+</body>
+</html>

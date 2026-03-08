@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Main Menu</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <div class="header">
+      <div>
+        <p class="header-title">Early Intervention in Psychosis Halton/Warrington Safety App</p>
+        <p class="header-subtitle" id="headerSubtitle">Main Menu</p>
+      </div>
+      <div class="header-actions nav-buttons">
+        <button id="logoutBtn" class="btn btn-outline">Logout</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-title">Choose an option</p>
+      <p class="section-subtitle">Select a tool to continue.</p>
+
+      <div class="form-card">
+        <button class="btn btn-primary" onclick="location.href='practitioner.html'">
+          My Diary
+        </button>
+      </div>
+
+      <div class="form-card">
+        <button class="btn btn-primary" onclick="location.href='duty.html'">
+          Duty Dashboard
+        </button>
+      </div>
+
+      <div class="form-card">
+        <button id="managerBtn" class="btn btn-primary">
+          Manager Settings
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const u = getUser();
+    if (!u) {
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("headerSubtitle").textContent =
+      `Logged in as: ${u.name || u.email}`;
+
+    document.getElementById("logoutBtn").onclick = () => {
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    };
+
+    document.getElementById("managerBtn").onclick = () => {
+      if (u.role !== "manager") {
+        alert("Current user doesn't have these permissions");
+        return;
+      }
+      window.location.href = "manager.html";
+    };
+  </script>
+</body>
+</html>
