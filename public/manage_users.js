@@ -33,7 +33,7 @@ const addUserForm = document.getElementById("addUserForm");
 /* ---------------- LOAD PRACTITIONERS ---------------- */
 
 async function loadPractitioners() {
-  const users = await apiGet("/practitioners");
+  const users = await apiGet("/api/practitioners");
   practitionerList.innerHTML = "";
 
   users.forEach((u) => {

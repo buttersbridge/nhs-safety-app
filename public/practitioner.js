@@ -36,7 +36,7 @@ dateInput.value = new Date().toISOString().slice(0, 10);
 
 async function loadVisits() {
   const date = dateInput.value;
-  const visits = await apiGet("/api/visits", { userId: user.id, date });
+  const visits = await apiGet("/visits", { userId: user.id, date });
 
   visitList.innerHTML = "";
 
