@@ -1,6 +1,9 @@
-const user = requireUser();
+console.log("Loaded duty.js version 3");
 
-/* NAVIGATION */
+const userDuty = requireUser();
+
+/* ---------------- NAVIGATION BUTTONS ---------------- */
+
 document.getElementById("logoutBtn").onclick = () => {
   localStorage.removeItem("user");
   window.location.href = "index.html";
@@ -15,60 +18,112 @@ document.getElementById("dutyBtn").onclick = () => {
 };
 
 document.getElementById("managerBtn").onclick = () => {
+  if (userDuty.role !== "manager") {
+    alert("Current user doesn't have these permissions");
+    return;
+  }
   window.location.href = "manager.html";
 };
 
-const visitList = document.getElementById("visitList");
+/* ---------------- ELEMENTS ---------------- */
 
-/* LOAD DUTY VISITS */
-async function loadVisits() {
-  const today = new Date().toISOString().split("T")[0];
-  const visits = await apiGet(`/duty/visits?date=${today}`);
+const dutyDate = document.getElementById("dutyDate");
+const dutyGrid = document.getElementById("dutyGrid");
 
-  visitList.innerHTML = "";
+/* ---------------- INITIAL DATE ---------------- */
 
-  visits.forEach(v => {
-    const row = document.createElement("div");
-    row.classList.add("visit-row");
+dutyDate.value = new Date().toISOString().slice(0, 10);
 
-    const now = new Date();
-    const start = new Date(`${v.date}T${v.start_time}`);
-    const end = new Date(`${v.date}T${v.end_time}`);
+/*----------------- GET COLOURS--------------- */
 
-    // SAFE
-    if (v.safe === 1) {
-      row.classList.add("visit-safe");
+function getStatusColourClass(v) {
+  const now = new Date();
+  const start = new Date(`${v.date}T${v.start_time}`);
+  const end = new Date(`${v.date}T${v.end_time}`);
 
-    // CURRENT
-    } else if (now >= start && now <= end) {
-      row.classList.add("visit-current");
+  // SAFE
+  if (v.safe === 1) {
+    return "visit-green";
+  }
 
-    // OVERDUE
-    } else if (now > end) {
-      const minutesOverdue = Math.floor((now - end) / 60000);
+  // CURRENT
+  if (now >= start && now <= end) {
+    return "visit-blue";
+  }
 
-      if (minutesOverdue >= 30) {
-        if (v.high_risk === 1) {
-          row.classList.add("visit-critical-highrisk"); // blinking red
-        } else {
-          row.classList.add("visit-critical"); // solid red
-        }
-      } else {
-        row.classList.add("visit-overdue"); // orange
+  // OVERDUE
+  if (now > end) {
+    const minutesOverdue = Math.floor((now - end) / 60000);
+
+    if (minutesOverdue >= 30) {
+      if (v.high_risk === 1) {
+        return "visit-red-highrisk"; // blinking red
       }
+      return "visit-red"; // solid red
     }
 
-    row.innerHTML = `
-      <div class="visit-info">
-        <strong>${v.initials}</strong> — ${v.type}<br>
-        ${v.start_time} → ${v.end_time}<br>
-        Practitioner: ${v.practitioner_name}
-      </div>
-    `;
+    return "visit-orange"; // < 30 mins overdue
+  }
 
-    visitList.appendChild(row);
+  // Default (future or unknown)
+  return "visit-grey";
+}
+
+/* ---------------- LOAD DUTY VISITS ---------------- */
+
+async function loadDutyVisits() {
+  const date = dutyDate.value;
+  const visits = await apiGet("/duty/visits", { date });
+
+  // Hours from 08:00 to 20:00
+  const hours = [];
+  for (let h = 8; h <= 20; h++) {
+    hours.push(h.toString().padStart(2, "0") + ":00");
+  }
+
+  dutyGrid.innerHTML = "";
+
+  hours.forEach(hour => {
+    const hourBlock = document.createElement("div");
+    hourBlock.className = "hour-block";
+
+    const header = document.createElement("div");
+    header.className = "hour-header";
+    header.textContent = hour;
+    hourBlock.appendChild(header);
+
+    // Visits overlapping this hour
+    const matching = visits.filter(v => {
+      return v.start_time <= hour && v.end_time > hour;
+    });
+
+    const list = document.createElement("div");
+    list.className = "hour-visits";
+
+    matching.forEach(v => {
+      const card = document.createElement("div");
+      card.className = "visit-item " + getStatusColourClass(v);
+
+      card.innerHTML = `
+        <div class="visit-header">
+          <span class="visit-type">${v.practitioner_name}</span>
+        </div>
+        <div class="visit-time">${v.type} (${v.initials || ""})</div>
+        <div class="visit-time">${v.start_time}–${v.end_time}</div>
+      `;
+
+      list.appendChild(card);
+    });
+
+    hourBlock.appendChild(list);
+    dutyGrid.appendChild(hourBlock);
   });
 }
 
-loadVisits();
-setInterval(loadVisits, 30000); // refresh every 30 seconds
+/* ---------------- EVENT LISTENERS ---------------- */
+
+dutyDate.addEventListener("change", loadDutyVisits);
+
+/* ---------------- INITIAL LOAD ---------------- */
+
+loadDutyVisits();
