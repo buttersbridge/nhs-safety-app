@@ -61,39 +61,41 @@
 
   </div>
 
-  <!-- SCRIPTS -->
-  <script src="app.js"></script>
-  <script>
-    const u = getUser();
-    if (!u) {
-      window.location.href = "index.html";
+<!-- SCRIPTS -->
+<script src="app.js"></script>
+
+<script>
+  const u = getUser();
+  if (!u) {
+    window.location.href = "index.html";
+  }
+
+  document.getElementById("headerSubtitle").textContent =
+    `Duty view (${u.name || u.email})`;
+
+  document.getElementById("logoutBtn").onclick = () => {
+    localStorage.removeItem("user");
+    window.location.href = "index.html";
+  };
+
+  document.getElementById("menuBtn").onclick = () => {
+    window.location.href = "menu.html";
+  };
+
+  document.getElementById("dutyBtn").onclick = () => {
+    window.location.href = "duty.html";
+  };
+
+  document.getElementById("managerBtn").onclick = () => {
+    if (u.role !== "manager") {
+      alert("Current user doesn't have these permissions");
+      return;
     }
+    window.location.href = "manager.html";
+  };
+</script>
 
-    document.getElementById("headerSubtitle").textContent =
-      `Duty view (${u.name || u.email})`;
-
-    document.getElementById("logoutBtn").onclick = () => {
-      localStorage.removeItem("user");
-      window.location.href = "index.html";
-    };
-
-    document.getElementById("menuBtn").onclick = () => {
-      window.location.href = "menu.html";
-    };
-
-    document.getElementById("dutyBtn").onclick = () => {
-      window.location.href = "duty.html";
-    };
-
-    document.getElementById("managerBtn").onclick = () => {
-      if (u.role !== "manager") {
-        alert("Current user doesn't have these permissions");
-        return;
-      }
-      window.location.href = "manager.html";
-    };
-  </script>
-
-  <script src="duty.js"></script>
+<!-- IMPORTANT: duty.js MUST be last -->
+<script src="duty.js"></script>
 </body>
 </html>
