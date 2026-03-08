@@ -15,7 +15,7 @@ document.getElementById("savePasswordBtn").onclick = async () => {
     return;
   }
 
-  const result = await apiPost("/user/change-password", {
+  const result = await apiPost("/change-password", {
     old_password: oldPw,
     new_password: newPw
   });
