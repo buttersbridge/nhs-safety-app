@@ -28,22 +28,31 @@ app.post("/api/login", (req, res) => {
 /*----------------- CHANGE PASSWORD --------------*/
 
 app.post("/user/change-password", async (req, res) => {
-  const { old_password, new_password } = req.body;
-  const userId = req.user.id; // from your auth middleware
+  try {
+    const { old_password, new_password } = req.body;
+    const userId = req.user.id;
 
-  const user = await db.getUserById(userId);
+    const user = await db.getUserById(userId);
 
-  // Check old password
-  if (!bcrypt.compareSync(old_password, user.password_hash)) {
-    return res.json({ error: "Current password is incorrect" });
+    if (!user) {
+      return res.json({ error: "User not found" });
+    }
+
+    const correct = bcrypt.compareSync(old_password, user.password_hash);
+    if (!correct) {
+      return res.json({ error: "Current password is incorrect" });
+    }
+
+    const newHash = bcrypt.hashSync(new_password, 10);
+
+    await db.updateUserPassword(userId, newHash);
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error("Password change error:", err);
+    res.json({ error: "Server error updating password" });
   }
-
-  // Hash new password
-  const newHash = bcrypt.hashSync(new_password, 10);
-
-  await db.updateUserPassword(userId, newHash);
-
-  res.json({ success: true });
 });
 
 /* ---------------- PRACTITIONERS LIST ---------------- */
