@@ -1,5 +1,9 @@
 const user = requireUser();
 
+document.getElementById("menuBtn").onclick = () => {
+  window.location.href = "menu.html";
+};
+
 document.getElementById("saveBtn").onclick = async () => {
   const oldPassword = document.getElementById("oldPassword").value;
   const newPassword = document.getElementById("newPassword").value;
