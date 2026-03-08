@@ -49,7 +49,7 @@ let selectedIds = new Set();
 /* ---------------- LOAD PRACTITIONERS ---------------- */
 
 async function loadPractitioners() {
-  practitioners = await apiGet("/practitioners");
+  practitioners = await apiGet("/api/practitioners");
   practitionerListDiv.innerHTML = "";
 
   practitioners.forEach((p) => {
