@@ -7,7 +7,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "..", "public")));
 
 /* ---------------- LOGIN ---------------- */
 
@@ -24,8 +23,6 @@ app.post("/api/login", (req, res) => {
     }
   );
 });
-
-
 
 /* ---------------- PRACTITIONERS LIST ---------------- */
 
@@ -81,7 +78,7 @@ app.post("/api/users/:id/role", (req, res) => {
 
 /* ---------------- VISITS ---------------- */
 
-app.get("/api/visits", (req, res) => {
+app.get("/visits", (req, res) => {
   const { userId, date } = req.query;
 
   db.all(
@@ -94,7 +91,7 @@ app.get("/api/visits", (req, res) => {
   );
 });
 
-app.post("/api/visits", (req, res) => {
+app.post("/visits", (req, res) => {
   const {
     userId,
     date,
@@ -175,6 +172,10 @@ app.get("/api/duty/visits", (req, res) => {
     res.json(rows);
   });
 });
+
+/* ---------------- STATIC FILES (MUST BE LAST) ---------------- */
+
+app.use(express.static(path.join(__dirname, "..", "public")));
 
 /* ---------------- START SERVER ---------------- */
 
