@@ -73,18 +73,7 @@ async function loadPractitioners() {
   });
 }
 
-/* ---------------- SAVE DUTY ASSIGNMENT ---------------- */
 
-saveDutyBtn.onclick = async () => {
-  const date = dateInput.value;
-
-  await apiPost("/api/duty/assign", {
-    date,
-    practitionerIds: Array.from(selectedIds)
-  });
-
-  alert("Duty saved");
-};
 
 /* ---------------- INITIAL LOAD ---------------- */
 

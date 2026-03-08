@@ -134,26 +134,6 @@ app.delete("/api/visits/:id", (req, res) => {
 
 /* ---------------- DUTY ---------------- */
 
-app.post("/api/duty/assign", (req, res) => {
-  const { date, practitionerIds } = req.body;
-
-  db.serialize(() => {
-    db.run("delete from duty_assignments where date = ?", [date]);
-
-    const stmt = db.prepare(
-      "insert into duty_assignments (date, practitioner_id) values (?, ?)"
-    );
-
-    practitionerIds.forEach((id) => {
-      stmt.run(date, id);
-    });
-
-    stmt.finalize((err) => {
-      if (err) return res.status(400).json({ error: err.message });
-      res.json({ success: true });
-    });
-  });
-});
 
 app.get("/api/duty/visits", (req, res) => {
   const { date } = req.query;

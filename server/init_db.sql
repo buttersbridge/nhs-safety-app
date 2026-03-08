@@ -23,13 +23,6 @@ create table if not exists visits (
   foreign key (user_id) references users(id)
 );
 
--- duty assignments
-create table if not exists duty_assignments (
-  id integer primary key autoincrement,
-  date text not null,
-  practitioner_id integer not null,
-  foreign key (practitioner_id) references users(id)
-);
 
 -- seed users
 insert or ignore into users (email, password, name, role) values
