@@ -78,7 +78,7 @@ async function loadPractitioners() {
 saveDutyBtn.onclick = async () => {
   const date = dateInput.value;
 
-  await apiPost("/duty/assign", {
+  await apiPost("/api/duty/assign", {
     date,
     practitionerIds: Array.from(selectedIds)
   });
