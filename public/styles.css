@@ -61,8 +61,10 @@ body {
   gap: 8px;
 }
 
+/* Top Bar (used on most pages) */
+
 .top-bar {
-  background: #005eb8;   /* NHS Blue */
+  background: var(--nhs-blue);
   color: white;
   padding: 10px 20px;
   display: flex;
@@ -226,25 +228,11 @@ label {
 
 /* Status colours */
 
-.visit-grey .status-dot {
-  background: #9ca3af;
-}
-
-.visit-blue .status-dot {
-  background: var(--info);
-}
-
-.visit-green .status-dot {
-  background: var(--success);
-}
-
-.visit-orange .status-dot {
-  background: var(--warning);
-}
-
-.visit-red .status-dot {
-  background: var(--danger);
-}
+.visit-grey .status-dot { background: #9ca3af; }
+.visit-blue .status-dot { background: var(--info); }
+.visit-green .status-dot { background: var(--success); }
+.visit-orange .status-dot { background: var(--warning); }
+.visit-red .status-dot { background: var(--danger); }
 
 .visit-safe-text {
   color: var(--success);
@@ -302,7 +290,7 @@ a:hover {
   margin-top: 4px;
 }
 
-/* Hourly diary grid for duty/manager */
+/* Hourly diary grid */
 
 .hour-block {
   background: var(--card-bg);
@@ -332,9 +320,32 @@ a:hover {
   margin-top: 0;
 }
 
-/* Responsive */
+/* ============================
+   RESPONSIVE IMPROVEMENTS
+   ============================ */
 
 @media (max-width: 600px) {
+
+  /* Top bar stacks vertically */
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .top-bar-right {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .nav-buttons .btn {
+    margin-left: 0;
+  }
+
+  /* Header responsiveness */
   .header {
     border-radius: 0 0 16px 16px;
     flex-direction: column;
@@ -345,14 +356,46 @@ a:hover {
     justify-content: flex-start;
   }
 
+  /* Forms */
   .form-row {
     flex-direction: column;
   }
+
+  /* Cards */
+  .card,
+  .form-card,
+  .hour-block {
+    width: 100%;
+    padding: 14px;
+  }
+
+  /* Buttons become full width */
+  .btn,
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    text-align: center;
+  }
+
+  .button-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Inputs */
+  input,
+  select {
+    width: 100%;
+    font-size: 1rem;
+  }
 }
+
+/* Promote/Delete buttons */
 
 .promote-btn {
   background: transparent;
-  color: #0072ce; /* NHS bright blue */
+  color: #0072ce;
   border: 1px solid #0072ce;
   padding: 6px 12px;
   border-radius: 4px;
@@ -366,7 +409,7 @@ a:hover {
 
 .delete-btn {
   background: transparent;
-  color: #005eb8; /* NHS blue */
+  color: #005eb8;
   border: 1px solid #005eb8;
   padding: 6px 12px;
   border-radius: 4px;
@@ -388,35 +431,30 @@ a:hover {
   background: #fafafa;
 }
 
-/* ================================
+/* ============================
    DUTY DASHBOARD STATUS COLOURS
-   ================================ */
+   ============================ */
 
-/* Current visit (blue) */
 .visit-blue {
   background: var(--nhs-light-blue);
   border-left: 4px solid var(--info);
 }
 
-/* Overdue < 30 mins (orange) */
 .visit-orange {
   background: #fff4e5;
   border-left: 4px solid var(--warning);
 }
 
-/* Overdue ≥ 30 mins (red) */
 .visit-red {
   background: #ffe5e5;
   border-left: 4px solid var(--danger);
 }
 
-/* Safe (green) */
 .visit-green {
   background: #e6f6e6;
   border-left: 4px solid var(--success);
 }
 
-/* High‑risk overdue (blinking red) */
 @keyframes blink-red {
   0% { background-color: #ffe5e5; }
   50% { background-color: #ffcccc; }
@@ -429,9 +467,9 @@ a:hover {
   animation: blink-red 1s infinite;
 }
 
-/* ================================
+/* ============================
    LEGEND
-   ================================ */
+   ============================ */
 
 .legend {
   display: flex;
