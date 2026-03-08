@@ -9,6 +9,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.0",
+    "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.1",
     "sqlite3": "^5.0.2"
   }
