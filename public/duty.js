@@ -73,7 +73,7 @@ function getStatusColourClass(v) {
 
 async function loadDutyVisits() {
   const date = dutyDate.value;
-  const visits = await apiGet("/duty/visits", { date });
+  const visits = await apiGet("/api/duty/visits", { date });
 
   // Hours from 08:00 to 20:00
   const hours = [];
