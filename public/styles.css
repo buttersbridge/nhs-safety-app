@@ -183,6 +183,15 @@ label {
   color: var(--text-muted);
 }
 
+.timeline-now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: red;
+  z-index: 50;
+}
+
 /* Add visit form */
 
 .form-card {

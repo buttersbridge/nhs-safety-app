@@ -1,4 +1,4 @@
-console.log("Loaded duty.js version 5 (timeline)");
+console.log("Loaded duty.js version 6 (timeline + now-line + overlap)");
 
 const userDuty = requireUser();
 
@@ -28,7 +28,7 @@ document.getElementById("managerBtn").onclick = () => {
 /* ---------------- ELEMENTS ---------------- */
 
 const dutyDate = document.getElementById("dutyDate");
-const dutyGrid = document.getElementById("dutyGrid"); // now used as timeline container
+const dutyGrid = document.getElementById("dutyGrid");
 
 /* ---------------- INITIAL DATE ---------------- */
 
@@ -41,31 +41,17 @@ function getStatusColourClass(v) {
   const start = new Date(`${v.date}T${v.start_time}`);
   const end = new Date(`${v.date}T${v.end_time}`);
 
-  // SAFE
-  if (v.safe === 1) {
-    return "visit-green";
-  }
+  if (v.safe === 1) return "visit-green";
+  if (now >= start && now <= end) return "visit-blue";
 
-  // CURRENT
-  if (now >= start && now <= end) {
-    return "visit-blue";
-  }
-
-  // OVERDUE
   if (now > end) {
     const minutesOverdue = Math.floor((now - end) / 60000);
-
     if (minutesOverdue >= 30) {
-      if (v.high_risk === 1) {
-        return "visit-red-highrisk"; // blinking red
-      }
-      return "visit-red"; // solid red
+      return v.high_risk === 1 ? "visit-red-highrisk" : "visit-red";
     }
-
-    return "visit-orange"; // < 30 mins overdue
+    return "visit-orange";
   }
 
-  // Default (future or unknown)
   return "visit-grey";
 }
 
@@ -76,18 +62,56 @@ function timeToMinutes(t) {
   return h * 60 + m;
 }
 
+/* ---------------- OVERLAP STACKING ---------------- */
+
+function assignOverlapColumns(visits) {
+  visits.sort((a, b) => a.start_minutes - b.start_minutes);
+
+  let columns = [];
+
+  visits.forEach(v => {
+    let placed = false;
+
+    for (let i = 0; i < columns.length; i++) {
+      const last = columns[i][columns[i].length - 1];
+      if (v.start_minutes >= last.end_minutes) {
+        columns[i].push(v);
+        v.column = i;
+        placed = true;
+        break;
+      }
+    }
+
+    if (!placed) {
+      columns.push([v]);
+      v.column = columns.length - 1;
+    }
+  });
+
+  return columns.length; // number of columns needed
+}
+
 /* ---------------- RENDER TIMELINE ---------------- */
 
 function renderTimeline(visits) {
-  dutyGrid.innerHTML = ""; // clear old content
+  dutyGrid.innerHTML = "";
 
-  const dayStart = 8 * 60;   // 08:00
-  const dayEnd = 20 * 60;    // 20:00
+  const dayStart = 8 * 60;
+  const dayEnd = 20 * 60;
   const totalMinutes = dayEnd - dayStart;
-  const timelineHeight = 1200; // px height for full day
+  const timelineHeight = 1200;
 
   dutyGrid.style.position = "relative";
   dutyGrid.style.minHeight = timelineHeight + "px";
+
+  // Pre-calc minutes
+  visits.forEach(v => {
+    v.start_minutes = timeToMinutes(v.start_time);
+    v.end_minutes = timeToMinutes(v.end_time);
+  });
+
+  // Assign overlap columns
+  const totalColumns = assignOverlapColumns(visits);
 
   /* ---- Hour Labels ---- */
   for (let h = 8; h <= 20; h++) {
@@ -102,16 +126,35 @@ function renderTimeline(visits) {
     dutyGrid.appendChild(label);
   }
 
+  /* ---- Current Time Line ---- */
+  const today = new Date().toISOString().slice(0, 10);
+  if (dutyDate.value === today) {
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+    if (nowMinutes >= dayStart && nowMinutes <= dayEnd) {
+      const top = ((nowMinutes - dayStart) / totalMinutes) * timelineHeight;
+
+      const nowLine = document.createElement("div");
+      nowLine.className = "timeline-now-line";
+      nowLine.style.top = `${top}px`;
+
+      dutyGrid.appendChild(nowLine);
+    }
+  }
+
   /* ---- Visits ---- */
   visits.forEach(v => {
-    const start = timeToMinutes(v.start_time);
-    const end = timeToMinutes(v.end_time);
-
-    const top = ((start - dayStart) / totalMinutes) * timelineHeight;
-    const height = ((end - start) / totalMinutes) * timelineHeight;
+    const top = ((v.start_minutes - dayStart) / totalMinutes) * timelineHeight;
+    const height = ((v.end_minutes - v.start_minutes) / totalMinutes) * timelineHeight;
 
     const div = document.createElement("div");
     div.className = "timeline-visit " + getStatusColourClass(v);
+
+    const widthPercent = 100 / totalColumns;
+    div.style.width = `calc(${widthPercent}% - 6px)`;
+    div.style.left = `calc(${v.column * widthPercent}% + 20px)`;
+
     div.style.top = `${top}px`;
     div.style.height = `${height}px`;
 
@@ -145,6 +188,4 @@ dutyDate.addEventListener("change", loadDutyVisits);
 /* ---------------- INITIAL LOAD ---------------- */
 
 loadDutyVisits();
-
-// Auto‑refresh every 30 seconds
 setInterval(loadDutyVisits, 30000);
