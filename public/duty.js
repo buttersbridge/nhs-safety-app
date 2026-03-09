@@ -97,7 +97,20 @@ function renderDutyColumns(visits) {
       div.style.top = `${top + 32}px`; // + header offset
       div.style.height = `${height}px`;
 
-      div.textContent = v.initials || "??";
+      // Decide how much detail to show based on box height
+if (height > 60) {
+  // Full details
+  div.innerHTML = `
+    <strong>${v.initials}</strong><br>
+    ${v.type}<br>
+    ${v.start_time}–${v.end_time}
+  `;
+} else {
+  // Compact version
+  div.innerHTML = `
+    <strong>${v.initials}</strong> – ${v.type}
+  `;
+}
 
       div.onclick = () => {
         alert(

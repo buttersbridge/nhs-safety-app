@@ -661,3 +661,7 @@ body.duty-page .section {
   width: 100%;
   overflow: visible;
 }
+
+.timeline-visit {
+  line-height: 1.2;
+}
