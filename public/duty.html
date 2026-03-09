@@ -31,36 +31,27 @@
 
       <!-- LEGEND -->
       <div class="legend">
-        <div class="legend-item">
-          <span class="legend-box legend-blue"></span> Current visit
-        </div>
-        <div class="legend-item">
-          <span class="legend-box legend-orange"></span> Overdue (&lt; 30 mins)
-        </div>
-        <div class="legend-item">
-          <span class="legend-box legend-red"></span> Overdue (≥ 30 mins)
-        </div>
-        <div class="legend-item">
-          <span class="legend-box legend-highrisk"></span> High‑risk overdue (blinking)
-        </div>
-        <div class="legend-item">
-          <span class="legend-box legend-green"></span> Checked‑in safe
-        </div>
+        <div class="legend-item"><span class="legend-box legend-blue"></span> Current visit</div>
+        <div class="legend-item"><span class="legend-box legend-orange"></span> Overdue (&lt; 30 mins)</div>
+        <div class="legend-item"><span class="legend-box legend-red"></span> Overdue (≥ 30 mins)</div>
+        <div class="legend-item"><span class="legend-box legend-highrisk"></span> High‑risk overdue</div>
+        <div class="legend-item"><span class="legend-box legend-green"></span> Checked‑in safe</div>
       </div>
 
       <!-- DATE PICKER -->
       <div class="controls-row">
-        <label>
-          Date:
+        <label>Date:
           <input type="date" id="dutyDate">
         </label>
       </div>
 
-      <!-- TIMELINE (IMPORTANT: matches duty.js) -->
-      <div id="dutyGrid" class="timeline"></div>
+      <!-- MULTI‑COLUMN DUTY VIEW -->
+      <div id="dutyColumns" class="duty-columns"></div>
+
+      <!-- RED CURRENT TIME LINE -->
+      <div id="nowLine" class="now-line"></div>
 
     </div>
-
   </div>
 
 <!-- SCRIPTS -->
@@ -68,9 +59,7 @@
 
 <script>
   const u = getUser();
-  if (!u) {
-    window.location.href = "index.html";
-  }
+  if (!u) window.location.href = "index.html";
 
   document.getElementById("headerSubtitle").textContent =
     `Duty view (${u.name || u.email})`;
@@ -80,24 +69,15 @@
     window.location.href = "index.html";
   };
 
-  document.getElementById("menuBtn").onclick = () => {
-    window.location.href = "menu.html";
-  };
-
-  document.getElementById("dutyBtn").onclick = () => {
-    window.location.href = "duty.html";
-  };
+  document.getElementById("menuBtn").onclick = () => window.location.href = "menu.html";
+  document.getElementById("dutyBtn").onclick = () => window.location.href = "duty.html";
 
   document.getElementById("managerBtn").onclick = () => {
-    if (u.role !== "manager") {
-      alert("Current user doesn't have these permissions");
-      return;
-    }
+    if (u.role !== "manager") return alert("Current user doesn't have these permissions");
     window.location.href = "manager.html";
   };
 </script>
 
-<!-- IMPORTANT: duty.js MUST be last -->
 <script src="duty.js"></script>
 </body>
 </html>

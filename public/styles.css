@@ -553,3 +553,56 @@ a:hover {
 .legend-red { background: #ffe5e5; border-color: var(--danger); }
 .legend-green { background: #e6f6e6; border-color: var(--success); }
 .legend-highrisk { background: #ffe5e5; border-color: var(--danger); animation: blink-red 1s infinite; }
+
+.duty-columns {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 40px;
+  position: relative;
+}
+
+.practitioner-column {
+  flex: 1;
+  min-width: 180px;
+  border-left: 3px solid var(--nhs-blue);
+  position: relative;
+  height: 1200px;
+  background: var(--card-bg);
+  border-radius: 6px;
+}
+
+.practitioner-header {
+  text-align: center;
+  font-weight: bold;
+  padding: 6px;
+  background: var(--nhs-blue);
+  color: white;
+  border-bottom: 2px solid var(--border-soft);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.timeline-visit {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  border-radius: 6px;
+  padding: 4px;
+  font-size: 0.85rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: red;
+  z-index: 50;
+  pointer-events: none;
+}
