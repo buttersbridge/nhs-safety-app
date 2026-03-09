@@ -554,60 +554,74 @@ a:hover {
 .legend-green { background: #e6f6e6; border-color: var(--success); }
 .legend-highrisk { background: #ffe5e5; border-color: var(--danger); animation: blink-red 1s infinite; }
 
-/* Main layout: time column + practitioner columns */
-.duty-layout {
-  display: grid;
-  grid-template-columns: 60px 1fr;
+/* Outer wrapper fills full width and full height */
+.duty-wrapper {
+  display: flex;
   width: 100%;
-  height: calc(100vh - 260px); /* fills screen below header/legend */
-  overflow-y: auto;
+  height: calc(100vh - 240px); /* fills screen under header/legend */
   position: relative;
-  border: 1px solid var(--border-soft);
-  border-radius: 6px;
+  overflow-y: auto; /* vertical scroll for timeline */
   background: var(--card-bg);
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
 }
 
-/* Time column stays fixed width */
+/* Fixed time column on the left */
 .time-column {
+  width: 70px;
+  min-width: 70px;
   position: relative;
+  padding-top: 32px; /* space for sticky headers */
   height: 1200px;
-  padding-top: 32px;
   font-size: 0.75rem;
   color: var(--text-muted);
+  border-right: 2px solid var(--border-soft);
 }
 
-/* Practitioner columns container */
+/* Time labels */
+.time-label {
+  position: absolute;
+  right: 6px;
+  transform: translateY(-50%);
+}
+
+/* Horizontal scroll container for practitioner columns */
+.columns-scroll {
+  flex: 1;
+  overflow-x: auto; /* horizontal scroll on mobile */
+  overflow-y: visible;
+}
+
+/* Practitioner columns row */
 .duty-columns {
   display: flex;
   gap: 12px;
   height: 1200px;
-  padding-top: 32px;
-  overflow-x: auto;       /* horizontal scroll on mobile */
-  overflow-y: visible;
-  width: 100%;
+  padding-top: 32px; /* sticky header offset */
+  width: max-content; /* ensures columns expand horizontally */
 }
 
 /* Each practitioner column */
 .practitioner-column {
-  flex: 1 1 220px;        /* grows on desktop, scrolls on mobile */
+  width: 220px; /* fixed width for consistency */
   min-width: 220px;
-  border-left: 3px solid var(--nhs-blue);
-  position: relative;
   background: var(--card-bg);
+  border-left: 3px solid var(--nhs-blue);
   border-radius: 6px;
+  position: relative;
 }
 
-/* Sticky header inside scrollable container */
+/* Sticky practitioner header */
 .practitioner-header {
-  text-align: center;
-  font-weight: bold;
-  padding: 6px;
-  background: var(--nhs-blue);
-  color: white;
-  border-bottom: 2px solid var(--border-soft);
   position: sticky;
   top: 0;
   z-index: 10;
+  background: var(--nhs-blue);
+  color: white;
+  padding: 6px;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 2px solid var(--border-soft);
 }
 
 /* Visit boxes */
@@ -627,7 +641,7 @@ a:hover {
 /* Red line across all practitioner columns */
 .now-line {
   position: absolute;
-  left: 60px; /* after time column */
+  left: 70px; /* after time column */
   right: 0;
   height: 3px;
   background: red;
