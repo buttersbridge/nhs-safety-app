@@ -648,3 +648,16 @@ a:hover {
   z-index: 50;
   pointer-events: none;
 }
+
+/* Duty page should be full width */
+body.duty-page .app {
+  max-width: none;
+  width: 100%;
+  padding: 0 16px;
+}
+
+/* Allow section to expand fully */
+body.duty-page .section {
+  width: 100%;
+  overflow: visible;
+}
