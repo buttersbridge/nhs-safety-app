@@ -173,6 +173,7 @@ visits.forEach(v => {
 
   dutyGrid.appendChild(div);
 });
+}
 
 /* ---------------- LOAD DUTY VISITS ---------------- */
 
