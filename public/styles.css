@@ -554,24 +554,51 @@ a:hover {
 .legend-green { background: #e6f6e6; border-color: var(--success); }
 .legend-highrisk { background: #ffe5e5; border-color: var(--danger); animation: blink-red 1s infinite; }
 
+.duty-layout {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  position: relative;
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+}
+
+/* Time column on the left */
+.time-column {
+  position: relative;
+  height: 1200px;
+  padding-top: 32px; /* space for header row */
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.time-label {
+  position: absolute;
+  right: 4px;
+  transform: translateY(-50%);
+}
+
+/* Practitioner columns container */
 .duty-columns {
   display: flex;
   gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 40px;
   position: relative;
+  height: 1200px;
+  padding-top: 32px; /* space for sticky headers */
 }
 
+/* Each practitioner column */
 .practitioner-column {
   flex: 1;
   min-width: 180px;
   border-left: 3px solid var(--nhs-blue);
   position: relative;
-  height: 1200px;
   background: var(--card-bg);
   border-radius: 6px;
 }
 
+/* Sticky header INSIDE scrollable duty-layout */
 .practitioner-header {
   text-align: center;
   font-weight: bold;
@@ -584,6 +611,7 @@ a:hover {
   z-index: 10;
 }
 
+/* Visit boxes */
 .timeline-visit {
   position: absolute;
   left: 6px;
@@ -597,9 +625,10 @@ a:hover {
   cursor: pointer;
 }
 
+/* Red line across all columns */
 .now-line {
   position: absolute;
-  left: 0;
+  left: 60px;   /* after time column */
   right: 0;
   height: 3px;
   background: red;

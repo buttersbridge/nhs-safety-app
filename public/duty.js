@@ -34,10 +34,42 @@ function timeToMinutes(t) {
   return h * 60 + m;
 }
 
-/* ---------------- RENDER MULTI‑COLUMN DUTY VIEW ---------------- */
+const dutyDate = document.getElementById("dutyDate");
+const dutyColumns = document.getElementById("dutyColumns");
+const timeColumn = document.getElementById("timeColumn");
+const nowLine = document.getElementById("nowLine");
+
+dutyDate.value = new Date().toISOString().slice(0, 10);
+
+function timeToMinutes(t) {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function renderTimeColumn() {
+  timeColumn.innerHTML = "";
+
+  const dayStart = 8 * 60;
+  const dayEnd = 20 * 60;
+  const totalMinutes = dayEnd - dayStart;
+  const timelineHeight = 1200;
+
+  for (let h = 8; h <= 20; h++) {
+    const minutes = h * 60;
+    const top = ((minutes - dayStart) / totalMinutes) * timelineHeight;
+
+    const label = document.createElement("div");
+    label.className = "time-label";
+    label.style.top = `${top + 32}px`; // + header offset
+    label.textContent = `${String(h).padStart(2, "0")}:00`;
+
+    timeColumn.appendChild(label);
+  }
+}
 
 function renderDutyColumns(visits) {
   dutyColumns.innerHTML = "";
+  renderTimeColumn();
 
   const groups = {};
   visits.forEach(v => {
@@ -68,7 +100,7 @@ function renderDutyColumns(visits) {
 
       const div = document.createElement("div");
       div.className = "timeline-visit " + getStatusColourClass(v);
-      div.style.top = `${top}px`;
+      div.style.top = `${top + 32}px`; // + header offset
       div.style.height = `${height}px`;
 
       div.textContent = v.initials || "??";
@@ -91,8 +123,6 @@ function renderDutyColumns(visits) {
   renderNowLine();
 }
 
-/* ---------------- RED CURRENT TIME LINE ---------------- */
-
 function renderNowLine() {
   const today = new Date().toISOString().slice(0, 10);
   if (dutyDate.value !== today) {
@@ -105,7 +135,6 @@ function renderNowLine() {
 
   const dayStart = 8 * 60;
   const dayEnd = 20 * 60;
-
   if (minutes < dayStart || minutes > dayEnd) {
     nowLine.style.display = "none";
     return;
@@ -113,14 +142,11 @@ function renderNowLine() {
 
   const timelineHeight = 1200;
   const totalMinutes = dayEnd - dayStart;
-
   const top = ((minutes - dayStart) / totalMinutes) * timelineHeight;
 
   nowLine.style.display = "block";
-  nowLine.style.top = `${top + 140}px`; /* adjust for header height */
+  nowLine.style.top = `${top + 32}px`; // + header offset
 }
-
-/* ---------------- LOAD VISITS ---------------- */
 
 async function loadDutyVisits() {
   const date = dutyDate.value;
@@ -129,6 +155,5 @@ async function loadDutyVisits() {
 }
 
 dutyDate.addEventListener("change", loadDutyVisits);
-
 loadDutyVisits();
 setInterval(loadDutyVisits, 30000);
