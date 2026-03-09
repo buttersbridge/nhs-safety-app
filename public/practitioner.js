@@ -58,7 +58,7 @@ async function loadVisits() {
       btn.textContent = "Check in safe";
       btn.className = "btn btn-primary";
       btn.onclick = async () => {
-        await apiPost(`/visits/${v.id}/checkin`, {});
+        await apiPost(`/api/visits/${v.id}/checkin`, {});
         loadVisits();
       };
       li.appendChild(btn);
