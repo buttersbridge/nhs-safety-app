@@ -554,16 +554,17 @@ a:hover {
 .legend-green { background: #e6f6e6; border-color: var(--success); }
 .legend-highrisk { background: #ffe5e5; border-color: var(--danger); animation: blink-red 1s infinite; }
 
-/* Outer wrapper fills full width and full height */
+/* Outer wrapper: full width, NO internal vertical scroll */
 .duty-wrapper {
   display: flex;
   width: 100%;
-  height: calc(100vh - 240px); /* fills screen under header/legend */
+  /* height: calc(100vh - 240px);  <-- REMOVE this fixed height */
   position: relative;
-  overflow-y: auto; /* vertical scroll for timeline */
+  overflow: visible; /* let the page handle vertical scrolling */
   background: var(--card-bg);
   border-radius: 6px;
   border: 1px solid var(--border-soft);
+  padding-bottom: 16px;
 }
 
 /* Fixed time column on the left */
@@ -571,8 +572,8 @@ a:hover {
   width: 70px;
   min-width: 70px;
   position: relative;
-  padding-top: 32px; /* space for sticky headers */
-  height: 1200px;
+  padding-top: 32px; /* space for headers */
+  height: 1200px;   /* timeline height */
   font-size: 0.75rem;
   color: var(--text-muted);
   border-right: 2px solid var(--border-soft);
@@ -585,25 +586,25 @@ a:hover {
   transform: translateY(-50%);
 }
 
-/* Horizontal scroll container for practitioner columns */
+/* Horizontal scroll ONLY for practitioner columns */
 .columns-scroll {
   flex: 1;
-  overflow-x: auto; /* horizontal scroll on mobile */
+  overflow-x: auto;  /* horizontal scroll on mobile / many practitioners */
   overflow-y: visible;
 }
 
-/* Practitioner columns row */
+/* Row of practitioner columns */
 .duty-columns {
   display: flex;
   gap: 12px;
-  height: 1200px;
-  padding-top: 32px; /* sticky header offset */
-  width: max-content; /* ensures columns expand horizontally */
+  height: 1200px;    /* same as time-column */
+  padding-top: 32px; /* header offset */
+  width: max-content;
 }
 
 /* Each practitioner column */
 .practitioner-column {
-  width: 220px; /* fixed width for consistency */
+  width: 220px;
   min-width: 220px;
   background: var(--card-bg);
   border-left: 3px solid var(--nhs-blue);
@@ -611,7 +612,7 @@ a:hover {
   position: relative;
 }
 
-/* Sticky practitioner header */
+/* Sticky header (sticks to top of PAGE scroll, not inner scroll) */
 .practitioner-header {
   position: sticky;
   top: 0;
