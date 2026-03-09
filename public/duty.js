@@ -1,4 +1,4 @@
-console.log("Loaded duty.js version 7 (multi-column + red line)");
+console.log("Loaded duty.js version 8 (multi-column + colours + smart details)");
 
 const userDuty = requireUser();
 
@@ -35,10 +35,7 @@ function timeToMinutes(t) {
   return h * 60 + m;
 }
 
-function timeToMinutes(t) {
-  const [h, m] = t.split(":").map(Number);
-  return h * 60 + m;
-}
+/* ---------------- TIME COLUMN ---------------- */
 
 function renderTimeColumn() {
   timeColumn.innerHTML = "";
@@ -54,21 +51,31 @@ function renderTimeColumn() {
 
     const label = document.createElement("div");
     label.className = "time-label";
-    label.style.top = `${top + 32}px`; // + header offset
+    label.style.top = `${top + 32}px`;
     label.textContent = `${String(h).padStart(2, "0")}:00`;
 
     timeColumn.appendChild(label);
   }
 }
 
+/* ---------------- DUTY COLUMNS ---------------- */
+
 function renderDutyColumns(visits) {
   dutyColumns.innerHTML = "";
   renderTimeColumn();
 
+  // Group visits by practitioner
   const groups = {};
   visits.forEach(v => {
     if (!groups[v.practitioner_name]) groups[v.practitioner_name] = [];
     groups[v.practitioner_name].push(v);
+  });
+
+  // Assign each practitioner a stable colour index
+  const practitionerNames = Object.keys(groups);
+  const colourMap = {};
+  practitionerNames.forEach((name, index) => {
+    colourMap[name] = index % 8; // cycle through 8 colours
   });
 
   const dayStart = 8 * 60;
@@ -76,12 +83,14 @@ function renderDutyColumns(visits) {
   const totalMinutes = dayEnd - dayStart;
   const timelineHeight = 1200;
 
-  Object.keys(groups).forEach(name => {
+  practitionerNames.forEach(name => {
+    const colourIndex = colourMap[name];
+
     const col = document.createElement("div");
-    col.className = "practitioner-column";
+    col.className = `practitioner-column practitioner-colour-${colourIndex}`;
 
     const header = document.createElement("div");
-    header.className = "practitioner-header";
+    header.className = `practitioner-header practitioner-header-colour-${colourIndex}`;
     header.textContent = name;
     col.appendChild(header);
 
@@ -94,23 +103,21 @@ function renderDutyColumns(visits) {
 
       const div = document.createElement("div");
       div.className = "timeline-visit " + getStatusColourClass(v);
-      div.style.top = `${top + 32}px`; // + header offset
+      div.style.top = `${top + 32}px`;
       div.style.height = `${height}px`;
 
-      // Decide how much detail to show based on box height
-if (height > 60) {
-  // Full details
-  div.innerHTML = `
-    <strong>${v.initials}</strong><br>
-    ${v.type}<br>
-    ${v.start_time}–${v.end_time}
-  `;
-} else {
-  // Compact version
-  div.innerHTML = `
-    <strong>${v.initials}</strong> – ${v.type}
-  `;
-}
+      /* SMART DETAIL LOGIC */
+      if (height > 60) {
+        div.innerHTML = `
+          <strong>${v.initials}</strong><br>
+          ${v.type}<br>
+          ${v.start_time}–${v.end_time}
+        `;
+      } else {
+        div.innerHTML = `
+          <strong>${v.initials}</strong> – ${v.type}
+        `;
+      }
 
       div.onclick = () => {
         alert(
@@ -129,6 +136,8 @@ if (height > 60) {
 
   renderNowLine();
 }
+
+/* ---------------- RED NOW LINE ---------------- */
 
 function renderNowLine() {
   const today = new Date().toISOString().slice(0, 10);
@@ -152,8 +161,10 @@ function renderNowLine() {
   const top = ((minutes - dayStart) / totalMinutes) * timelineHeight;
 
   nowLine.style.display = "block";
-  nowLine.style.top = `${top + 32}px`; // + header offset
+  nowLine.style.top = `${top + 32}px`;
 }
+
+/* ---------------- LOAD VISITS ---------------- */
 
 async function loadDutyVisits() {
   const date = dutyDate.value;

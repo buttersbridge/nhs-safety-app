@@ -665,3 +665,23 @@ body.duty-page .section {
 .timeline-visit {
   line-height: 1.2;
 }
+
+/* Practitioner colour themes */
+.practitioner-colour-0 { border-left-color: #0072ce !important; }
+.practitioner-colour-1 { border-left-color: #009e73 !important; }
+.practitioner-colour-2 { border-left-color: #d55e00 !important; }
+.practitioner-colour-3 { border-left-color: #cc79a7 !important; }
+.practitioner-colour-4 { border-left-color: #f0e442 !important; }
+.practitioner-colour-5 { border-left-color: #56b4e9 !important; }
+.practitioner-colour-6 { border-left-color: #e69f00 !important; }
+.practitioner-colour-7 { border-left-color: #999999 !important; }
+
+/* Header colour matching */
+.practitioner-header-colour-0 { background: #0072ce !important; }
+.practitioner-header-colour-1 { background: #009e73 !important; }
+.practitioner-header-colour-2 { background: #d55e00 !important; }
+.practitioner-header-colour-3 { background: #cc79a7 !important; }
+.practitioner-header-colour-4 { background: #f0e442 !important; color: black !important; }
+.practitioner-header-colour-5 { background: #56b4e9 !important; }
+.practitioner-header-colour-6 { background: #e69f00 !important; }
+.practitioner-header-colour-7 { background: #999999 !important; }
