@@ -4,6 +4,7 @@ const userDuty = requireUser();
 
 const dutyDate = document.getElementById("dutyDate");
 const dutyColumns = document.getElementById("dutyColumns");
+const timeColumn = document.getElementById("timeColumn");
 const nowLine = document.getElementById("nowLine");
 
 dutyDate.value = new Date().toISOString().slice(0, 10);
@@ -33,13 +34,6 @@ function timeToMinutes(t) {
   const [h, m] = t.split(":").map(Number);
   return h * 60 + m;
 }
-
-const dutyDate = document.getElementById("dutyDate");
-const dutyColumns = document.getElementById("dutyColumns");
-const timeColumn = document.getElementById("timeColumn");
-const nowLine = document.getElementById("nowLine");
-
-dutyDate.value = new Date().toISOString().slice(0, 10);
 
 function timeToMinutes(t) {
   const [h, m] = t.split(":").map(Number);
