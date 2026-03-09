@@ -143,30 +143,36 @@ function renderTimeline(visits) {
     }
   }
 
-  /* ---- Visits ---- */
-  visits.forEach(v => {
-    const top = ((v.start_minutes - dayStart) / totalMinutes) * timelineHeight;
-    const height = ((v.end_minutes - v.start_minutes) / totalMinutes) * timelineHeight;
+/* ---- Visits ---- */
+visits.forEach(v => {
+  const top = ((v.start_minutes - dayStart) / totalMinutes) * timelineHeight;
+  const height = ((v.end_minutes - v.start_minutes) / totalMinutes) * timelineHeight;
 
-    const div = document.createElement("div");
-    div.className = "timeline-visit " + getStatusColourClass(v);
+  const div = document.createElement("div");
+  div.className = "timeline-visit " + getStatusColourClass(v);
 
-    const widthPercent = 100 / totalColumns;
-    div.style.width = `calc(${widthPercent}% - 6px)`;
-    div.style.left = `calc(${v.column * widthPercent}% + 20px)`;
+  const widthPercent = 100 / totalColumns;
+  div.style.width = `calc(${widthPercent}% - 6px)`;
+  div.style.left = `calc(${v.column * widthPercent}% + 20px)`;
 
-    div.style.top = `${top}px`;
-    div.style.height = `${height}px`;
+  div.style.top = `${top}px`;
+  div.style.height = `${height}px`;
 
-    div.innerHTML = `
-      <strong>${v.practitioner_name}</strong><br>
-      ${v.type} (${v.initials || ""})<br>
-      ${v.start_time}–${v.end_time}
-    `;
+  // Only show practitioner name
+  div.innerHTML = `<strong>${v.practitioner_name}</strong>`;
 
-    dutyGrid.appendChild(div);
-  });
-}
+  // Show full details on click
+  div.onclick = () => {
+    alert(
+      `${v.practitioner_name}\n` +
+      `${v.type} (${v.initials || ""})\n` +
+      `${v.start_time}–${v.end_time}\n\n` +
+      `Status: ${getStatusColourClass(v).replace("visit-", "")}`
+    );
+  };
+
+  dutyGrid.appendChild(div);
+});
 
 /* ---------------- LOAD DUTY VISITS ---------------- */
 

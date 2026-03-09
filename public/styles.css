@@ -174,6 +174,13 @@ label {
   font-size: 0.9rem;
 }
 
+.timeline-visit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
 .timeline-time-label {
   position: absolute;
   left: -50px;
