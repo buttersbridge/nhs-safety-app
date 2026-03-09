@@ -558,22 +558,21 @@ a:hover {
 .duty-wrapper {
   display: flex;
   width: 100%;
-  /* height: calc(100vh - 240px);  <-- REMOVE this fixed height */
   position: relative;
-  overflow: visible; /* let the page handle vertical scrolling */
+  overflow: visible; /* page handles vertical scroll */
   background: var(--card-bg);
   border-radius: 6px;
   border: 1px solid var(--border-soft);
   padding-bottom: 16px;
 }
 
-/* Fixed time column on the left */
+/* Fixed time column */
 .time-column {
   width: 70px;
   min-width: 70px;
   position: relative;
-  padding-top: 32px; /* space for headers */
-  height: 1200px;   /* timeline height */
+  padding-top: 32px;
+  height: 1200px; /* timeline height */
   font-size: 0.75rem;
   color: var(--text-muted);
   border-right: 2px solid var(--border-soft);
@@ -586,20 +585,20 @@ a:hover {
   transform: translateY(-50%);
 }
 
-/* Horizontal scroll ONLY for practitioner columns */
+/* Horizontal scroll ONLY */
 .columns-scroll {
   flex: 1;
-  overflow-x: auto;  /* horizontal scroll on mobile / many practitioners */
-  overflow-y: visible;
+  overflow-x: auto;   /* horizontal scroll on mobile */
+  overflow-y: visible; /* no vertical scroll */
 }
 
-/* Row of practitioner columns */
+/* Practitioner columns row */
 .duty-columns {
   display: flex;
   gap: 12px;
-  height: 1200px;    /* same as time-column */
-  padding-top: 32px; /* header offset */
-  width: max-content;
+  height: 1200px; /* same as time column */
+  padding-top: 32px; /* sticky header offset */
+  width: max-content; /* expands horizontally */
 }
 
 /* Each practitioner column */
@@ -612,7 +611,7 @@ a:hover {
   position: relative;
 }
 
-/* Sticky header (sticks to top of PAGE scroll, not inner scroll) */
+/* Sticky header (sticks to top of PAGE scroll) */
 .practitioner-header {
   position: sticky;
   top: 0;
